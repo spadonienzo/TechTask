@@ -1,32 +1,31 @@
-const axios = require('axios')
-require('dotenv').config()
 const {Pokemon, Type} = require('../db')
 const {Op} = require('sequelize')
 const dbHelper = require('../helpers/dbHelper')
-const apiHelper = require('../helpers/apiHelper')
+const getPokemons = require('../controllers/getPokemons')
 
 const findPokemonByQuery = async (name) => {
-    const apiPokemons = (await axios(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`)).data
-    const dbPokemons = await Pokemon.findAll({
-        where:{
-            name: {[Op.iLike] : `%${name}%`}},
-        include: {
-            model: Type, 
-            attributes: ["name"],
-            through:{
-                attributes: []}
-            }
-        })
+    console.log(name);
 
-    const cleanApiPokemons = apiHelper(apiPokemons)
-    const cleanDbPokemons = dbHelper(dbPokemons)
+    const pokemonsDB = await Pokemon.findAll({
+      where:{
+          name: {[Op.iLike] : `%${name}%`}},
+      include: {
+          model: Type, 
+          attributes: ["name"],
+          through:{
+              attributes: []}
+          }
+      })
 
-    const filteredApi = cleanApiPokemons.filter(e => e.name.toLowerCase().includes(name.toLowerCase()))
+    const cleanPokemonsDB = dbHelper(pokemonsDB)
     
-    if (!filteredApi && !cleanDbPokemons) return "No existe ese Pokemon en la base de datos"
-    if (cleanDbPokemons.length) return [...filteredApi, ...cleanDbPokemons]
+    const pokemonsApi = getPokemons()
+    const filteredPokemonsApi = (await pokemonsApi).filter(pokemon => pokemon.name.toLowerCase().includes(name.toLowerCase()))
+    
+    if (!filteredPokemonsApi && !cleanPokemonsDB) return "No existe el Pokemon con ese nombre en la base de datos"
+    if(cleanPokemonsDB.length) return [...filteredPokemonsApi, ...pokemonsApi]
 
-    return filteredApi
+    return filteredPokemonsApi
 }
 
 module.exports = findPokemonByQuery

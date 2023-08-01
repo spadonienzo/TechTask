@@ -8,11 +8,11 @@ const getNamePokemon = async (req,res) => {
         const results = name
             ? await findPokemonByQuery(name)
             : await getPokemons()
-
+        console.log(results);
         return res.status(200).json(results)
 
     } catch (error) {
-        
+        console.log(error);
         return res.status(400).json({error: error.message})
 
     }

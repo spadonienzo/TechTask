@@ -12,7 +12,7 @@ const getTypes = async () => {
                     name: type.name
                 }
             })
-            console.log(ApiTypes);
+
             Type.bulkCreate(ApiTypes)
             return await Type.findAll()
 

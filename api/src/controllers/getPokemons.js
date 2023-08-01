@@ -1,49 +1,44 @@
 const axios = require('axios')
 const {Pokemon, Type} = require('../db')
-const apiHelper = require('../helpers/apiHelper')
 const dbHelper = require('../helpers/dbHelper')
+const apiHelper = require('../helpers/apiHelper')
 
 const getPokemons = async () => {
     let url = `https://pokeapi.co/api/v2/pokemon`
-    let rawPokemonsApi = []
-    let cleanPokemonsApi = []
+
+    // DB
     
+    let rawPokemonsDb = await Pokemon.findAll({
+        include: [{model: Type}]})
+        
+    let cleanPokemonsDb = dbHelper(rawPokemonsDb)
+       
+    // API 
+        
+    let promisesPokemonsApi = []
+    let rawPokemonsApi = []
     do {
         let dataApi = (await axios(url)) 
-        rawPokemonsApi = [
-            ...rawPokemonsApi,
+        promisesPokemonsApi = [
+            ...promisesPokemonsApi,
             ...dataApi.data.results.map((pokemon) => {
-                let datos = axios(pokemon.url)
-                return datos
+                let data = axios(pokemon.url)
+                return data
             })
         ]
         url = dataApi.data.next
-    } while (url && rawPokemonsApi.length < 150)
+    } while (url && promisesPokemonsApi.length < 150)
     
-    await Promise.all(rawPokemonsApi).then((response) =>
-        response.map((element) => {
-            let pokemon = element.data
-            let pokemonApi = {
-                id: pokemon.id,
-                name: pokemon.name,
-                hp: pokemon.stats[0].base_stat,
-                attack: pokemon.stats[1].base_stat,
-                defense: pokemon.stats[2].base_stat,
-                speed: pokemon.stats[5].base_stat,
-                height: pokemon.height,
-                weight: pokemon.weight,
-                types: pokemon.types
-                ? pokemon.types.map((el) => el.type.name)
-                : "Unknown Type",
-                img: pokemon.sprites.other.dream_world.front_default,
-            }
-
-            cleanPokemonsApi.push(pokemonApi)
-
-        }))
+    await Promise.all(promisesPokemonsApi).then((response) =>
+        response.map((element => rawPokemonsApi.push(element.data))))
     
-        return cleanPokemonsApi
+    let cleanPokemonsApi = apiHelper(rawPokemonsApi)
 
+    
+    return  [...cleanPokemonsDb, ...cleanPokemonsApi]
+
+
+    
 }
 
 module.exports = getPokemons
