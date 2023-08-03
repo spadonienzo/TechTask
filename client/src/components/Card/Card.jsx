@@ -13,18 +13,15 @@ const Card = ({pokemon}) => {
             return array.push(type.name)
         })
     }
-    newArray = array.join(' - ')
+    newArray = array.join(' - ').toUpperCase()
 
-    let typesapi = types.join(' - ').toUpperCase()
-    console.log(types);
-    
     return(
         <div className='card'>
             <Link to={`/home/${id}`}>
                 <img src={image} alt={name} className='image'/>
             </Link>
             <p>{name[0].toUpperCase() + name.slice(1)}</p>
-            {newArray ? <p>{newArray}</p> : <p>{typesapi}</p>}
+            {newArray ? <p>{newArray}</p> : <p>{types.join(' - ').toUpperCase()}</p>}
         </div>
     )
 }

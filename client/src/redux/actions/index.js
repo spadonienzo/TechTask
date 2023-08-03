@@ -10,6 +10,7 @@ export const ORDER_BY_ATTACK = 'ORDER_BY_ATTACK'
 export const FILTER_BY_TYPE = 'FILTER_BY_TYPE'
 export const FILTER_BY_ORIGIN = 'FILTER_BYY_ORIGIN'
 export const CLEAR_FILTER = 'CLEAR_FILTER'
+export const CLEAR_DETAIL = 'CLEAR_DETAIL'
 
 const url = 'http://localhost:3001'
 
@@ -67,7 +68,6 @@ export const postPokemon = ({name,image,life,attack,defense,speed,height,weight,
             weight,
             Types
         })
-        console.log("esta es la data de la action ",response);
         alert('Pokemon has been created succesfully')
         dispatch({
             type: POST_POKEMON,
@@ -107,6 +107,13 @@ export const filterByOrigin = (value) => {
 export const clearFilter = (value) => {
     return {
         type: CLEAR_FILTER,
+        payload: value
+    }
+}
+
+export const clearDetail = (value) => {
+    return {
+        type: CLEAR_DETAIL,
         payload: value
     }
 }

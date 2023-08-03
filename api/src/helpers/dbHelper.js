@@ -1,6 +1,5 @@
 module.exports = (element)=>{
     element = element.map(elem =>{
-        let Types = pokemon.Type.map((type) => type.name)
         return{
             id: elem.id,
             name: elem.name,
@@ -11,7 +10,7 @@ module.exports = (element)=>{
             speed: elem.speed,
             height: elem.height,
             weight: elem.weight,
-            Types: Types,
+            Types: elem.Types,
             created: elem.created
         }
     })

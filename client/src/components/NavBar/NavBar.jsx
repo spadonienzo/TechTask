@@ -5,13 +5,14 @@ import { useLocation } from "react-router-dom";
 import "./NavBar.css";
 import pokemonlogo from '../../resources/pokemonlogo.png'
 
+
 const NavBar = () => {
 
     const location = useLocation()
 
     return(
         <div className="header">
-        <Link className="Link" to={"/home"}>
+        <Link  className="Link" to={"/home"}>
             <img src={pokemonlogo} alt="Logo" className="img-logo" />
         </Link>
         {location.pathname === '/home' ? (<SearchBar /> ): (<></>)}

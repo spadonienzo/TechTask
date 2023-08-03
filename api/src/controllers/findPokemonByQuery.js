@@ -4,7 +4,6 @@ const dbHelper = require('../helpers/dbHelper')
 const getPokemons = require('../controllers/getPokemons')
 
 const findPokemonByQuery = async (name) => {
-    console.log(name);
 
     const pokemonsDB = await Pokemon.findAll({
       where:{

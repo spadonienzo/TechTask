@@ -1,4 +1,4 @@
-import { GET_POKEMONS,GET_BY_NAME,GET_BY_ID,GET_TYPES,POST_POKEMON,ORDER_BY_NAME, ORDER_BY_ATTACK, FILTER_BY_TYPE, FILTER_BY_ORIGIN, CLEAR_FILTER } from '../actions/index'
+import { GET_POKEMONS,GET_BY_NAME,GET_BY_ID,GET_TYPES,POST_POKEMON,ORDER_BY_NAME, ORDER_BY_ATTACK, FILTER_BY_TYPE, FILTER_BY_ORIGIN, CLEAR_FILTER, CLEAR_DETAIL } from '../actions/index'
 
 let initialState = {
     pokemons: [],
@@ -75,10 +75,10 @@ const rootReducer = (state = initialState, action) => {
             };
         
         case FILTER_BY_TYPE:
-            const filteredTypes =
+            let filteredTypes =
                 action.payload === 'ALL'
                     ? state.allpokemons
-                    : state.allpokemons.filter(pokemon => pokemon.types.includes(action.payload))
+                    : state.allpokemons.filter(pokemon => pokemon.types?.includes(action.payload))
                 return {
                     ...state,
                     pokemons: filteredTypes
@@ -86,6 +86,7 @@ const rootReducer = (state = initialState, action) => {
 
         case FILTER_BY_ORIGIN:
             let filteredOrigin
+            console.log(action.payload);
             if (action.payload === 'ALL') {
                 filteredOrigin = state.allpokemons
             } else {
@@ -94,6 +95,7 @@ const rootReducer = (state = initialState, action) => {
                         ? state.allpokemons.filter(e => e.created)
                         : state.allpokemons.filter(e => !e.created)
             }
+            console.log(filteredOrigin);
             return {
                 ...state,
                 pokemons: filteredOrigin
@@ -102,6 +104,12 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 pokemons: state.allpokemons
+            };
+
+        case CLEAR_DETAIL:
+            return {
+                ...state,
+                detail: []
             };
 
         default:

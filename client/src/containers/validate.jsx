@@ -13,7 +13,9 @@ const validate = (input) => {
       'height',
       'weight',
       'life',
-
+      'attack',
+      'defense',
+      'speed',
     ]
 
     errorNum.forEach((value) => {
@@ -27,7 +29,6 @@ const validate = (input) => {
       }
     })
 
-    
     return error
 }
 

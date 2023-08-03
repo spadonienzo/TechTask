@@ -5,3 +5,17 @@
     font-size: 15px;
   }
 
+.input {
+  width: 100%;
+  clear: both;
+}
+
+.container input{
+  width: 400px;
+  clear: both;
+}
+
+.option{
+  display: flex;
+  flex-direction: row;
+}
