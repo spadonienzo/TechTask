@@ -1,0 +1,12 @@
+.search-bar {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 0px;
+}
+
+.button-submit {
+    cursor: pointer;
+    background-color : black;
+    color: aliceblue;
+}
